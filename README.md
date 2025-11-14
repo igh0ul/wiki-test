@@ -1,2 +1,28 @@
-# wiki-test
-An automated test that goes to Wikipedia, searches for the "Earth" page, and checks the amount of oxygen in the Earth's atmosphere. A positive test verifies that it's 20.95, while a negative test verifies that the amount of oxygen isn't equal to a different value.
+# Wikipedia Oxygen Tests 
+
+Этот мини‑проект запускает автотесты, которые проверяют, что на странице
+[«Земля» в русской Википедии](https://ru.wikipedia.org/wiki/Земля) указано **20,95 % кислорода** во вкладке-инфобоксе,
+а также содержит один негативный тест.
+
+## Быстрый старт
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python -m playwright install  # установит браузеры
+pytest -q
+```
+
+## Что проверяем
+1) **Позитивный тест**: поиск по слову «Земля» на `ru.wikipedia.org`, переход на статью и проверка,
+   что в инфобоксе указан текст `20,95 % — кислород` (допускается неразрывный пробел).
+2) **Негативный тест**: убеждаемся, что **нет** записи с точкой `20.95 % — кислород` (англ. формат).
+
+## Замечания по стабильности
+- Тесты используют семантические локаторы (role/name) для поиска поля поиска Википедии
+  и проверяют текст **внутри инфобокса** статьи «Земля».
+- На случай редактирования верстки Википедии регулярное выражение допускает разные варианты пробелов
+  между числом и знаком `%`.
+
+## Запуск в CI
+Любая среда с Python 3.10+ и поддержкой Playwright/pytest подойдёт.
